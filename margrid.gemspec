@@ -6,11 +6,11 @@ require 'margrid/version'
 Gem::Specification.new do |spec|
   spec.name          = "margrid"
   spec.version       = Margrid::VERSION
-  spec.authors       = ["Yves Senn"]
+  spec.authors       = ["Yves Senn", "Jonas Baumann"]
   spec.email         = ["yves.senn@gmail.com"]
-  spec.summary       = %q{TODO: Write a short summary. Required.}
-  spec.description   = %q{TODO: Write a longer description. Optional.}
-  spec.homepage      = ""
+  spec.summary       = %q{Grid library to build paginated and sortable tables.}
+  spec.description   = %q{Margrid makes it easy to add sortable and paginated tables to your web pages. Since state is passed through the query string, browser bookmarks can be used to save different views.}
+  spec.homepage      = "https://www.github.com/4teamwork/margrid"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")
@@ -20,4 +20,5 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency "bundler", "~> 1.6"
   spec.add_development_dependency "rake", "~> 10.0"
+  spec.add_development_dependency "minitest", "~> 5.4"
 end

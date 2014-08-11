@@ -5,7 +5,7 @@ require 'minitest/mock'
 $: << File.expand_path('../../lib', __FILE__)
 require "margrid"
 
-class Margrid::TestCase < MiniTest::Unit::TestCase
+class Margrid::TestCase < Minitest::Test
 end
 
 module ActiveRecord

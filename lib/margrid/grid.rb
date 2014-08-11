@@ -1,5 +1,8 @@
 module Margrid
   class Grid
+    # Every grid created with the same +id+ will result in the same
+    # serialization output. This means that they share the same state.
+    # +relation+ is an instance following the +Margrid::Relation+ protocol.
     def initialize(id, relation)
       @id = id
       @relation = relation
@@ -64,7 +67,7 @@ module Margrid
     def rows
       @rows ||= @components.values.inject(@relation) do |relation, comp|
         comp.apply(relation)
-      end
+      end.to_a
     end
   end
 end

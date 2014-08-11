@@ -26,8 +26,8 @@ class GridTest < Margrid::TestCase
   def test_rows_applies_every_component_to_the_relation
     @grid.prepend custom: CustomComponent.new
 
-    @relation.expect :do_stuff, "APPLIED RELATION", []
-    assert_equal "APPLIED RELATION", @grid.rows
+    @relation.expect :do_stuff, ["APPLIED RELATION"], []
+    assert_equal ["APPLIED RELATION"], @grid.rows
   end
 
   def test_knows_registered_components
@@ -86,5 +86,14 @@ class GridTest < Margrid::TestCase
     @grid.prepend(sorter: CustomComponent.new("cat"))
     assert_equal CustomComponent.new("cat"), @grid.component(:sorter)
     assert_equal Margrid.paginator(8), @grid.component(:paginator)
+  end
+end
+
+class GridRelationTest < Margrid::TestCase
+  User = Struct.new(:name, :age)
+  def test_with_ruby_object_relation
+    collection = [User.new("Jack", 12), User.new("Megan", 34), User.new("Sandra", 82)]
+    grid = Margrid::Grid.new("test", Margrid::ObjectRelation.new(collection))
+    assert_equal collection, grid.rows
   end
 end

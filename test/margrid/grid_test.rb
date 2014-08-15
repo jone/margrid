@@ -6,6 +6,10 @@ class GridTest < Margrid::TestCase
       relation.do_stuff
     end
 
+    def self.load(params)
+      new params[:prefix]
+    end
+
     def dump
       {prefix => "state"}
     end
@@ -90,5 +94,19 @@ class GridTest < Margrid::TestCase
     @grid.prepend(sorter: CustomComponent.new("cat"))
     assert_equal CustomComponent.new("cat"), @grid.component(:sorter)
     assert_equal Margrid.paginator(8), @grid.component(:paginator)
+  end
+
+  def test_load_with_custom_component
+    assert_equal @grid, @grid.register(:my_comp, CustomComponent)
+    assert_nil @grid.component(:my_comp)
+    @grid.load({"margrid" => {"test" => { prefix: "welcome" }}})
+    assert_equal CustomComponent.new("welcome"), @grid.component(:my_comp)
+  end
+
+  def test_register_component_with_default
+    assert_equal @grid, @grid.register(:my_comp, CustomComponent, CustomComponent.new("default"))
+    assert_equal CustomComponent.new("default"), @grid.component(:my_comp)
+    @grid.load({"margrid" => {"test" => { prefix: "welcome" }}})
+    assert_equal CustomComponent.new("welcome"), @grid.component(:my_comp)
   end
 end

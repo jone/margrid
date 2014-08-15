@@ -3,7 +3,14 @@ module Margrid
     def initialize(id, relation)
       @id = id
       @relation = relation
+      @registered_components = {sorter: Sorter, paginator: Paginator}
       @components = {}
+    end
+
+    def register(comp_sym, comp_class, comp = nil)
+      @registered_components[comp_sym] = comp_class
+      @components[comp_sym] = comp unless comp.nil?
+      self
     end
 
     # Check wether a component is registered or not.
@@ -28,11 +35,10 @@ module Margrid
     # Load components from a Hash.
     def load(params)
       grid_params = params.fetch("margrid", {}).fetch(@id, {})
-      if sorter = Sorter.load(grid_params)
-        prepend sorter: sorter
-      end
-      if paginator = Paginator.load(grid_params)
-        prepend paginator: paginator
+      @registered_components.each do |comp_sym, comp_class|
+        if comp = comp_class.load(grid_params)
+          prepend comp_sym => comp
+        end
       end
       self
     end

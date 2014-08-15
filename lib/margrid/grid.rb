@@ -49,10 +49,9 @@ module Margrid
     # Dump components to a Hash. The key of the Hash is the rack param name.
     def to_query(comps = nil)
       comps ||= @components.values
-      prefix = "margrid[#{@id}]"
       comps.inject({}) do |params, comp|
         comp.dump.each do |k, v|
-          params[prefix + "[#{k}]"] = v
+          params[param_prefix + "[#{k}]"] = v
         end
         params
       end
@@ -65,6 +64,10 @@ module Margrid
       @rows ||= @components.values.inject(@relation) do |relation, comp|
         comp.apply(relation)
       end
+    end
+
+    def param_prefix
+      @param_prefix ||= "margrid[#{@id}]"
     end
   end
 end

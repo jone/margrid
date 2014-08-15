@@ -16,6 +16,10 @@ class GridTest < Margrid::TestCase
     @grid = Margrid::Grid.new("test", @relation)
   end
 
+  def test_param_prefix
+    assert_equal "margrid[test]", @grid.param_prefix
+  end
+
   def test_prepending_components_overwrites_existing_ones
     @grid.prepend custom: (first = CustomComponent.new)
     @grid.prepend custom: (second = CustomComponent.new)

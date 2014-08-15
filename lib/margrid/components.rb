@@ -21,11 +21,11 @@ module Margrid
     end
 
     def self.load(data)
-      new data[:sort], data[:direction] if data.key? :sort
+      new data["sort"], data["direction"] if data.key? "sort"
     end
 
     def dump
-      {sort: column, direction: direction}
+      {"sort" => column, "direction" => direction}
     end
 
     private
@@ -43,11 +43,11 @@ module Margrid
     end
 
     def self.load(data)
-      new data[:page] if data.key? :page
+      new data["page"] if data.key? "page"
     end
 
     def dump
-      {page: current_page}
+      {"page" => current_page}
     end
   end
 end

@@ -16,7 +16,7 @@ class BuilderTest < Margrid::TestCase
   end
 
   def test_load_components_from_params
-    grid = @builder.load({"margrid" => {"built" => {page: 4}}})
+    grid = @builder.load({"margrid" => {"built" => {"page" => 4}}})
     assert_equal Margrid.paginator(4), grid.component(:paginator)
   end
 

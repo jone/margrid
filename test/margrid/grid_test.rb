@@ -7,11 +7,11 @@ class GridTest < Margrid::TestCase
     end
 
     def self.load(params)
-      new params[:prefix]
+      new params["prefix"]
     end
 
     def dump
-      {prefix => "state"}
+      {"prefix" => prefix}
     end
   end
 
@@ -61,11 +61,11 @@ class GridTest < Margrid::TestCase
     @grid.prepend first: CustomComponent.new("some")
     @grid.prepend second: CustomComponent.new("more")
 
-    assert_equal({"margrid"=>{"test"=>{"some"=>"state", "more"=>"state"}}}, @grid.dump)
+    assert_equal({"margrid"=>{"test"=>{"prefix"=>"some", "prefix"=>"more"}}}, @grid.dump)
   end
 
   def test_dumping_a_specific_component
-    assert_equal({"margrid"=>{"test"=>{"not_much"=>"state"}}},
+    assert_equal({"margrid"=>{"test"=>{"prefix"=>"not_much"}}},
                  @grid.dump([CustomComponent.new("not_much")]))
   end
 
@@ -73,24 +73,24 @@ class GridTest < Margrid::TestCase
     @grid.prepend first: CustomComponent.new("first")
     @grid.prepend second: CustomComponent.new("second")
 
-    assert_equal({"margrid[test][first]"=>"state", "margrid[test][second]"=>"state"},
+    assert_equal({"margrid[test][prefix]"=>"first", "margrid[test][prefix]"=>"second"},
                  @grid.to_query)
   end
 
   def test_representing_a_component_as_query
-    assert_equal({"margrid[test][stuff]"=>"state"},
+    assert_equal({"margrid[test][prefix]"=>"stuff"},
                  @grid.to_query([CustomComponent.new("stuff")]))
   end
 
   def test_load_components_form_a_hash
-    @grid.load({"margrid" => {"test" => {sort: "name", direction: "asc", page: 3}}})
+    @grid.load({"margrid" => {"test" => {"sort" => "name", "direction" => "asc", "page" => 3}}})
     assert_equal Margrid.sorter("name", "asc"), @grid.component(:sorter)
     assert_equal Margrid.paginator(3), @grid.component(:paginator)
   end
 
   def test_load_and_prepend_overwrite_eachother
     @grid.prepend(paginator: CustomComponent.new("fluffy"))
-    @grid.load({"margrid" => {"test" => {sort: "name", direction: "asc", page: 8}}})
+    @grid.load({"margrid" => {"test" => {"sort" => "name", "direction" => "asc", "page" => 8}}})
     @grid.prepend(sorter: CustomComponent.new("cat"))
     assert_equal CustomComponent.new("cat"), @grid.component(:sorter)
     assert_equal Margrid.paginator(8), @grid.component(:paginator)
@@ -99,14 +99,14 @@ class GridTest < Margrid::TestCase
   def test_load_with_custom_component
     assert_equal @grid, @grid.register(:my_comp, CustomComponent)
     assert_nil @grid.component(:my_comp)
-    @grid.load({"margrid" => {"test" => { prefix: "welcome" }}})
+    @grid.load({"margrid" => {"test" => { "prefix" => "welcome" }}})
     assert_equal CustomComponent.new("welcome"), @grid.component(:my_comp)
   end
 
   def test_register_component_with_default
     assert_equal @grid, @grid.register(:my_comp, CustomComponent, CustomComponent.new("default"))
     assert_equal CustomComponent.new("default"), @grid.component(:my_comp)
-    @grid.load({"margrid" => {"test" => { prefix: "welcome" }}})
+    @grid.load({"margrid" => {"test" => { "prefix" => "welcome" }}})
     assert_equal CustomComponent.new("welcome"), @grid.component(:my_comp)
   end
 end

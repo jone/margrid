@@ -10,7 +10,7 @@ class PaginatorTest < Margrid::TestCase
   end
 
   def test_load_from_hash_with_existing_param
-    paginator = Margrid::Paginator.load({page: 23})
+    paginator = Margrid::Paginator.load({"page" => 23})
     assert_equal Margrid.paginator(23), paginator
   end
 
@@ -21,6 +21,6 @@ class PaginatorTest < Margrid::TestCase
 
   def test_dumping_to_a_hash
     paginator = Margrid.paginator(7)
-    assert_equal({page: 7}, paginator.dump)
+    assert_equal({"page" => 7}, paginator.dump)
   end
 end

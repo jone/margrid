@@ -10,7 +10,7 @@ class SorterTest < Margrid::TestCase
   end
 
   def test_load_from_hash_with_existing_param
-    sorter = Margrid::Sorter.load({sort: "name", direction: "asc"})
+    sorter = Margrid::Sorter.load({"sort" => "name", "direction" => "asc"})
     assert_equal Margrid.sorter("name", "asc"), sorter
   end
 
@@ -21,7 +21,7 @@ class SorterTest < Margrid::TestCase
 
   def test_dumping_to_a_hash
     sorter = Margrid.sorter("author", "desc")
-    assert_equal({sort: "author", direction: "desc"}, sorter.dump)
+    assert_equal({"sort" => "author", "direction" => "desc"}, sorter.dump)
   end
 
   def test_works_with_symbols_and_strings
